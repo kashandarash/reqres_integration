@@ -1,0 +1,9 @@
+{
+  "name": "kashnadarash/reqres_integration",
+  "description": "Drupal module for paginated API block with lazy builder",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "drupal/core": "^11"
+  }
+}

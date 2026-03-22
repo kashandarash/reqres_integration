@@ -1,0 +1,16 @@
+block.settings.reqres_integration_block:
+  type: block_settings
+  label: 'ReqRes Integration Block settings'
+  mapping:
+    items_per_page:
+      type: integer
+      label: 'Items per page'
+    label_email:
+      type: label
+      label: 'Email field label'
+    label_forename:
+      type: label
+      label: 'Forename field label'
+    label_surname:
+      type: label
+      label: 'Surname field label'

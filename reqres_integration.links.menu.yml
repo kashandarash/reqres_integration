@@ -1,0 +1,6 @@
+reqres_integration.api_settings:
+  title: 'ReqRes API Settings'
+  description: 'Configure the ReqRes API URL and key (stored in State, not exported config).'
+  route_name: reqres_integration.api_settings
+  parent: system.admin_config_services
+  weight: 10

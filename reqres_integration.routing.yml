@@ -1,0 +1,7 @@
+reqres_integration.api_settings:
+  path: '/admin/config/services/reqres-integration'
+  defaults:
+    _form: '\Drupal\reqres_integration\Form\ApiSettingsForm'
+    _title: 'ReqRes API Settings'
+  requirements:
+    _permission: 'administer site configuration'

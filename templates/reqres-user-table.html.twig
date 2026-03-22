@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Template for the reqres API users table.
+ *
+ * Available variables:
+ * - items: List of user objects, each with first_name, last_name, email keys.
+ * - label_forename: Column header for the first name.
+ * - label_surname: Column header for the last name.
+ * - label_email: Column header for the email.
+ */
+#}
+<table class="reqres-user-table">
+  <thead>
+    <tr>
+      <th>{{ label_forename }}</th>
+      <th>{{ label_surname }}</th>
+      <th>{{ label_email }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+      <tr>
+        <td>{{ item.first_name }}</td>
+        <td>{{ item.last_name }}</td>
+        <td><a href="mailto:{{ item.email }}">{{ item.email }}</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

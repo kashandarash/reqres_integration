@@ -14,7 +14,7 @@ API credentials are stored in Drupal **State** (environment-specific, never expo
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/YOUR_GITHUB_USERNAME/reqres_integration"
+      "url": "https://github.com/kashandarash/reqres_integration"
     }
   ]
 }
@@ -23,7 +23,7 @@ API credentials are stored in Drupal **State** (environment-specific, never expo
 2. Require the module:
 
 ```bash
-composer require yourname/reqres_integration:dev-main
+composer require kashandarash/reqres_integration
 ```
 
 3. Enable the module and rebuild caches:

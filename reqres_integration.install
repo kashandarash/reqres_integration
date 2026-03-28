@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the ReqRes Integration module.
+ */
+
+use Drupal\reqres_integration\Form\ApiSettingsForm;
+
+/**
+ * Implements hook_uninstall().
+ */
+function reqres_integration_uninstall(): void {
+  \Drupal::state()->deleteMultiple([
+    ApiSettingsForm::STATE_API_URL,
+    ApiSettingsForm::STATE_API_KEY,
+  ]);
+}

@@ -1,7 +1,7 @@
 services:
   reqres_integration.api_client:
     class: Drupal\reqres_integration\Service\ApiClient
-    arguments: [ '@http_client', '@logger.channel.reqres_integration', '@state', '@event_dispatcher' ]
+    arguments: [ '@http_client', '@logger.channel.reqres_integration', '@state', '@event_dispatcher', '@module_handler' ]
 
   reqres_integration.lazy_builder:
     class: Drupal\reqres_integration\LazyBuilder\ApiPagerLazyBuilder

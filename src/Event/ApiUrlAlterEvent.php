@@ -11,7 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class ApiUrlAlterEvent extends Event {
 
-  const string EVENT_NAME = 'reqres_integration.api_url_alter';
+  const EVENT_NAME = 'reqres_integration.api_url_alter';
 
   public function __construct(
     protected array $params,

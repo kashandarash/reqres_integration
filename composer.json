@@ -4,6 +4,22 @@
   "type": "drupal-module",
   "license": "GPL-2.0-or-later",
   "require": {
-    "drupal/core": "^11"
+    "php": "^8.2",
+    "drupal/core": "^10 || ^11"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10",
+    "guzzlehttp/psr7": "^2",
+    "psr/http-client": "^1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Drupal\\reqres_integration\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Drupal\\Tests\\reqres_integration\\": "test/src/"
+    }
   }
 }

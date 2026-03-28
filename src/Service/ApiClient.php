@@ -2,6 +2,7 @@
 
 namespace Drupal\reqres_integration\Service;
 
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\reqres_integration\Event\ApiUrlAlterEvent;
 use Drupal\reqres_integration\Form\ApiSettingsForm;
@@ -9,6 +10,9 @@ use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * API client class.
+ */
 class ApiClient {
 
   /**
@@ -24,6 +28,7 @@ class ApiClient {
     protected LoggerInterface          $logger,
     protected StateInterface           $state,
     protected EventDispatcherInterface $eventDispatcher,
+    protected ModuleHandlerInterface   $moduleHandler,
   ) {}
 
   /**
@@ -38,19 +43,22 @@ class ApiClient {
    *   Associative array with keys 'items' and 'total'.
    */
   public function fetch(int $page, int $limit): array {
-    $url = $this->state->get(ApiSettingsForm::STATE_API_URL, '');
+    $url = $this->state->get(ApiSettingsForm::STATE_API_URL, ApiSettingsForm::STATE_API_URL_DEFAULT);
     $api_key = $this->state->get(ApiSettingsForm::STATE_API_KEY, '');
+
+    if (empty($api_key)) {
+      $this->logger->error('The API key is not set');
+      return [
+        'items' => [],
+        'total' => NULL,
+      ];
+    }
 
     // Add an event so other modules can alter the query.
     // The users filtering should be in this stage, and not by removing some rows after the api call.
     // If we really have to filter users, and for example remove "John Dou", we have two correct options:
     // 1. Update the API and add support for it.
     // 2. Cache users in Drupal, for example on cron and that make extended select from this scope.
-    //
-    // P.S. Maybe by writing "Before presenting the list of users, an extension point should be exposed to allow a consumer of
-    // this module to further filter the list of users themselves to remove anyone they do not want to
-    // list." you wanted recursion, and additional api calls to fill the gaps in the paginated pages, but it is a dead end.
-    // Or maybe broken pagination is acceptable, but I don't think it is a good solutions. Thanks!
     $event = new ApiUrlAlterEvent(['page' => $page + 1, 'per_page' => $limit]);
     $this->eventDispatcher->dispatch($event, ApiUrlAlterEvent::EVENT_NAME);
     $full_url = $url . '?' . http_build_query($event->getParams());
@@ -61,9 +69,12 @@ class ApiClient {
       ]);
       $data = json_decode($response->getBody(), TRUE);
 
+      // Alter list of items.
+      $this->moduleHandler->alter('reqres_integration_api_data', $data);
+
       return [
         'items' => $data['data'] ?? [],
-        'total' => $data['total'] ?? NULL,
+         'total' => $data['total'] ?? 0,
       ];
     }
     catch (\Exception $e) {

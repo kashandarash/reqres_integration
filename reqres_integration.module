@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the ReqRes Integration module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function reqres_integration_theme(): array {
+  return [
+    // Custom template for users table.
+    'reqres_user_table' => [
+      'variables' => [
+        'items' => [],
+        'label_email' => 'Email',
+        'label_forename' => 'Forename',
+        'label_surname' => 'Surname',
+      ],
+    ],
+    // Add custom placeholder template for our lazy builder block.
+    'big_pipe_interface_preview__reqres_integration_lazy_builder_build' => [],
+  ];
+}

@@ -12,11 +12,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ApiSettingsForm extends FormBase {
 
-  const string STATE_API_URL = 'reqres_integration.api_url';
+  const STATE_API_URL = 'reqres_integration.api_url';
 
-  const string STATE_API_URL_DEFAULT = 'https://reqres.in/api/users';
+  const STATE_API_URL_DEFAULT = 'https://reqres.in/api/users';
 
-  const string STATE_API_KEY = 'reqres_integration.api_key';
+  const STATE_API_KEY = 'reqres_integration.api_key';
 
   /**
    * ApiSettingsForm construct.
@@ -51,10 +51,10 @@ class ApiSettingsForm extends FormBase {
     ];
 
     $form['api_key'] = [
-      '#type' => 'textfield',
+      '#type' => 'password',
       '#title' => $this->t('API Key'),
-      '#default_value' => $this->state->get(self::STATE_API_KEY, ''),
-      '#required' => TRUE,
+      '#description' => $this->state->get(self::STATE_API_KEY, '') ? $this->t('Leave blank to keep the existing key.') : '',
+      '#required' => !$this->state->get(self::STATE_API_KEY, ''),
     ];
 
     $form['actions'] = ['#type' => 'actions'];
@@ -74,7 +74,10 @@ class ApiSettingsForm extends FormBase {
     // It is easier than add config ignore.
     // But I prefer to add variables like api key in .env variables, so they can be secured/changed on file system level.
     $this->state->set(self::STATE_API_URL, $form_state->getValue('api_url'));
-    $this->state->set(self::STATE_API_KEY, $form_state->getValue('api_key'));
+    $api_key = $form_state->getValue('api_key');
+    if (!empty($api_key)) {
+      $this->state->set(self::STATE_API_KEY, $api_key);
+    }
 
     $this->messenger()->addStatus($this->t('API settings saved.'));
   }

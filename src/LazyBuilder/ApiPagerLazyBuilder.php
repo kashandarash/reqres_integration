@@ -9,6 +9,9 @@ use Drupal\reqres_integration\Service\ApiClient;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * Api Pager Lazy Builder class.
+ */
 class ApiPagerLazyBuilder implements TrustedCallbackInterface {
 
   use StringTranslationTrait;
@@ -51,8 +54,9 @@ class ApiPagerLazyBuilder implements TrustedCallbackInterface {
 
       $result = $this->apiClient->fetch($current_page, $items_per_page);
 
+      // Values should always exist.
       $items = $result['items'];
-      $total = $result['total'] ?? (($current_page + 1) * $items_per_page + 1);
+      $total = $result['total'];
 
       $this->pagerManager->createPager($total, $items_per_page);
     }

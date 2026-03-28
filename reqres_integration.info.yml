@@ -1,7 +1,7 @@
 name: 'ReqRes Integration'
 type: module
 description: 'Paginated API block with lazy builder and logging'
-core_version_requirement: ^11
+core_version_requirement: "^10 || ^11"
 package: ReqRes
 dependencies:
   - big_pipe:big_pipe

@@ -87,7 +87,7 @@ class ReqresApiSubscriber implements EventSubscriberInterface {
 
   public function onApiUrlAlter(ApiUrlAlterEvent $event): void {
     $params = $event->getParams();
-    // Example: add a custom filter parameter.
+    // Example: Real API could have a parameter like below, to filter the result.
     $params['filter'] = 'active';
     $event->setParams($params);
   }
@@ -129,3 +129,37 @@ The subscriber will now run on every API call made by this module.
 |---|---|
 | `getParams(): array` | Returns the current query parameters |
 | `setParams(array $params): void` | Replaces the query parameters |
+
+---
+
+## Extending: altering API response data
+
+After the API response is decoded the module invokes
+`hook_reqres_integration_api_data_alter(array &$data)`, passing the full raw
+decoded array by reference. Implement this hook to add, remove, or modify data
+before the module extracts `items` and `total`.
+
+### Example implementation
+
+```php
+// my_module/my_module.module
+
+/**
+ * Implements hook_reqres_integration_api_data_alter().
+ */
+function my_module_reqres_integration_api_data_alter(array &$data): void {
+  // Example: mark every user as verified.
+  foreach ($data['data'] as &$user) {
+    $user['verified'] = TRUE;
+  }
+}
+```
+
+No service registration is required — Drupal discovers `.module` implementations
+automatically.
+
+### Available hook
+
+| Hook | Invoked |
+|---|---|
+| `hook_reqres_integration_api_data_alter(array &$data)` | After `json_decode()`, before items/total are extracted |
